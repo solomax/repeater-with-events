@@ -18,9 +18,7 @@
  */
 package org.apache.solomax;
 
-import org.apache.wicket.core.request.handler.IPartialPageRequestHandler;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 
 public class MainPanel extends Panel {
@@ -38,11 +36,7 @@ public class MainPanel extends Panel {
 
 	@Override
 	protected void onInitialize() {
-		add(container.add(new EmptyPanel(PANEL_ID)).setOutputMarkupId(true));
+		add(container.add(new TestListPanel(PANEL_ID)).setOutputMarkupId(true));
 		super.onInitialize();
-	}
-
-	public void updateContents(IPartialPageRequestHandler handler) {
-		handler.add(container.replace(new TestListPanel(PANEL_ID)));
 	}
 }
