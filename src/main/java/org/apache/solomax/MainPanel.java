@@ -18,6 +18,10 @@
  */
 package org.apache.solomax;
 
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 
@@ -26,17 +30,32 @@ public class MainPanel extends Panel {
 	public static final String CONTAINER_PANEL_ID = "container";
 	private final WebMarkupContainer container = new WebMarkupContainer(CONTAINER_PANEL_ID);
 	private static final String PANEL_ID = "panel";
+	private final AbstractDefaultAjaxBehavior roomEnter = new AbstractDefaultAjaxBehavior() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected void respond(AjaxRequestTarget target) {
+			target.appendJavaScript("wbAction('act', 'param1', {});");
+		}
+	};
 
 	public MainPanel(String id) {
 		super(id);
 		setAuto(true);
 		setOutputMarkupId(true);
 		setOutputMarkupPlaceholderTag(true);
+		add(roomEnter);
 	}
 
 	@Override
 	protected void onInitialize() {
 		add(container.add(new TestListPanel(PANEL_ID)).setOutputMarkupId(true));
 		super.onInitialize();
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		response.render(OnDomReadyHeaderItem.forScript(roomEnter.getCallbackScript()));
 	}
 }

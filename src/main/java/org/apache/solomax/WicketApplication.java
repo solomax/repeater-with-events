@@ -1,5 +1,7 @@
 package org.apache.solomax;
 
+import org.apache.wicket.markup.head.ResourceAggregator;
+import org.apache.wicket.markup.head.filter.JavaScriptDeferHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 
@@ -26,6 +28,7 @@ public class WicketApplication extends WebApplication
 	@Override
 	public void init()
 	{
+		setHeaderResponseDecorator(response -> new ResourceAggregator(new JavaScriptDeferHeaderResponse(response)));
 		super.init();
 	}
 }
